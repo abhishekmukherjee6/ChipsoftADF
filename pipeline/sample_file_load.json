@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "sample_file_load",
 	"properties": {
 		"activities": [
 			{
@@ -65,6 +65,11 @@
 		"parameters": {
 			"filename": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"varfname": {
+				"type": "String"
 			}
 		},
 		"annotations": []
