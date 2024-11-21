@@ -45,7 +45,13 @@
 				"inputs": [
 					{
 						"referenceName": "ds_blob",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"fname": {
+								"value": "@pipeline().parameters.filename",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [

@@ -5,12 +5,20 @@
 			"referenceName": "linkBlob",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"fname": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "employee.csv",
+				"fileName": {
+					"value": "@dataset().fname",
+					"type": "Expression"
+				},
 				"container": "chipsoftblob"
 			},
 			"columnDelimiter": ",",
