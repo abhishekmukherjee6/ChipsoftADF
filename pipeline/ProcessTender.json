@@ -9,7 +9,7 @@
 				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
-						"activity": "Set Current Date",
+						"activity": "Set File Name",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -42,8 +42,12 @@
 						"referenceName": "DS_Tender",
 						"type": "DatasetReference",
 						"parameters": {
-							"ds_Country": {
+							"FolderName": {
 								"value": "@pipeline().parameters.Country",
+								"type": "Expression"
+							},
+							"FileName": {
+								"value": "@variables('FileName')",
 								"type": "Expression"
 							}
 						}
@@ -62,7 +66,31 @@
 				"typeProperties": {
 					"variableName": "CurrentDate",
 					"value": {
-						"value": "@formatDateTime(utcNow(),'mmddyyyy')",
+						"value": "@formatDateTime(utcNow(),'MMddyyyy')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set File Name",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set Current Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FileName",
+					"value": {
+						"value": "@concat(variables('CurrentDate'),'.csv') ",
 						"type": "Expression"
 					}
 				}
@@ -75,6 +103,9 @@
 		},
 		"variables": {
 			"CurrentDate": {
+				"type": "String"
+			},
+			"FileName": {
 				"type": "String"
 			}
 		},
