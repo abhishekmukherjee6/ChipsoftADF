@@ -6,10 +6,10 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"ds_Country": {
+			"FolderName": {
 				"type": "string"
 			},
-			"ds_Date": {
+			"FileName": {
 				"type": "string"
 			}
 		},
