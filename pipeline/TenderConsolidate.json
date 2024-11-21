@@ -13,6 +13,11 @@
 				"userProperties": []
 			}
 		],
+		"variables": {
+			"test": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
