@@ -5,6 +5,11 @@
 			"referenceName": "linkBlob",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"ds_Country": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
