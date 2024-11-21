@@ -1,0 +1,16 @@
+{
+	"name": "SF",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lnkSnowflake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "TENDERSTAGE",
+			"table": "TENDERS"
+		}
+	}
+}
