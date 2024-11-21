@@ -8,6 +8,9 @@
 		"parameters": {
 			"fname": {
 				"type": "string"
+			},
+			"folder": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -17,6 +20,10 @@
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
 					"value": "@dataset().fname",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
 					"type": "Expression"
 				},
 				"container": "chipsoftblob"
