@@ -44,7 +44,9 @@
 						"linkedServiceName": {
 							"referenceName": "linkBlob",
 							"type": "LinkedServiceReference"
-						}
+						},
+						"path": "chipsoftblob",
+						"enableCompression": true
 					}
 				},
 				"inputs": [
