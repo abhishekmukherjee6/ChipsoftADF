@@ -627,7 +627,7 @@
 		],
 		"typeProperties": {
 			"schema": "TENDERSTAGE",
-			"table": "EMPLOYEE"
+			"table": "TENDERS"
 		}
 	}
 }
