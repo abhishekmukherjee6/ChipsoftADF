@@ -1,9 +1,81 @@
 {
 	"name": "ProcessTender",
 	"properties": {
+		"activities": [
+			{
+				"name": "Copy Tender Data",
+				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [
+					{
+						"activity": "Set Current Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Tender",
+						"type": "DatasetReference",
+						"parameters": {
+							"ds_Country": {
+								"value": "@pipeline().parameters.Country",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "Set Current Date",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentDate",
+					"value": {
+						"value": "@formatDateTime(utcNow(),'mmddyyyy')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
 		"parameters": {
 			"Country": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"CurrentDate": {
+				"type": "String"
 			}
 		},
 		"annotations": []
