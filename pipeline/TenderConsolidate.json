@@ -3,17 +3,29 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Set variable1",
-				"type": "SetVariable",
+				"name": "StagingToConsolidation",
+				"type": "Script",
 				"dependsOn": [],
 				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
 				},
 				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "lnkSnowflake",
+					"type": "LinkedServiceReference"
+				},
 				"typeProperties": {
-					"variableName": "test",
-					"value": "dew"
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "call TENDERSRCCONS.TenderByCountry();\n"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
 		],
