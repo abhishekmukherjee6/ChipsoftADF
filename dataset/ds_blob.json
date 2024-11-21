@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Tenders1Nov2024To15Nov2024.csv",
+				"fileName": "newSFFile.csv",
 				"container": "chipsoftblob"
 			},
 			"columnDelimiter": ",",
