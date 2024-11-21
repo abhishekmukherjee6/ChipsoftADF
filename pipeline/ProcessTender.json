@@ -59,7 +59,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "SnowflakeTable1",
+						"referenceName": "SF",
 						"type": "DatasetReference"
 					}
 				]
