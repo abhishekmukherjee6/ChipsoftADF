@@ -1,0 +1,11 @@
+{
+	"name": "linkBlob",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"containerUri": "https://chipsoftadfblob.blob.core.windows.net/chipsoftblob",
+			"authenticationType": "Anonymous"
+		}
+	}
+}
