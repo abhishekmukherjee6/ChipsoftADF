@@ -50,7 +50,8 @@
 							"fname": {
 								"value": "@pipeline().parameters.filename",
 								"type": "Expression"
-							}
+							},
+							"folder": "'dddd'"
 						}
 					}
 				],
