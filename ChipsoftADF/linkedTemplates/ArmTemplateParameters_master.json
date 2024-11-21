@@ -17,8 +17,8 @@
 		"lnkSnowflake_properties_typeProperties_host": {
 			"value": "vt90872.central-india.azure.snowflakecomputing.com"
 		},
-		"US_properties_ProcessTender_parameters_Country": {
-			"value": "US"
+		"USA_properties_ProcessTender_parameters_Country": {
+			"value": "USA"
 		},
 		"containerUri": {
 			"value": ""

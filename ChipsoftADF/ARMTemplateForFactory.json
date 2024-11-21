@@ -23,9 +23,9 @@
 			"type": "string",
 			"defaultValue": "vt90872.central-india.azure.snowflakecomputing.com"
 		},
-		"US_properties_ProcessTender_parameters_Country": {
+		"USA_properties_ProcessTender_parameters_Country": {
 			"type": "string",
-			"defaultValue": "US"
+			"defaultValue": "USA"
 		}
 	},
 	"variables": {
@@ -1865,7 +1865,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/US')]",
+			"name": "[concat(parameters('factoryName'), '/USA')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1878,7 +1878,7 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"Country": "[parameters('US_properties_ProcessTender_parameters_Country')]"
+							"Country": "[parameters('USA_properties_ProcessTender_parameters_Country')]"
 						}
 					}
 				],
@@ -1891,7 +1891,7 @@
 						"timeZone": "India Standard Time",
 						"schedule": {
 							"minutes": [
-								15
+								30
 							],
 							"hours": [
 								3
@@ -1911,6 +1911,39 @@
 			"properties": {
 				"type": "SelfHosted",
 				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TenderConsolidate')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "test",
+							"value": "dew"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"test": {
+						"type": "String"
+					}
+				},
+				"annotations": []
 			},
 			"dependsOn": []
 		}

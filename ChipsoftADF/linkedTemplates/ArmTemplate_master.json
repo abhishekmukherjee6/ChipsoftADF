@@ -23,9 +23,9 @@
 			"type": "string",
 			"defaultValue": "vt90872.central-india.azure.snowflakecomputing.com"
 		},
-		"US_properties_ProcessTender_parameters_Country": {
+		"USA_properties_ProcessTender_parameters_Country": {
 			"type": "string",
-			"defaultValue": "US"
+			"defaultValue": "USA"
 		},
 		"containerUri": {
 			"type": "string",
@@ -66,8 +66,8 @@
 					"lnkSnowflake_properties_typeProperties_host": {
 						"value": "[parameters('lnkSnowflake_properties_typeProperties_host')]"
 					},
-					"US_properties_ProcessTender_parameters_Country": {
-						"value": "[parameters('US_properties_ProcessTender_parameters_Country')]"
+					"USA_properties_ProcessTender_parameters_Country": {
+						"value": "[parameters('USA_properties_ProcessTender_parameters_Country')]"
 					}
 				}
 			},
