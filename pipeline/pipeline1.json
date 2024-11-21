@@ -32,7 +32,15 @@
 							"type": "SnowflakeImportCopyCommand"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "linkBlob",
+							"type": "LinkedServiceReference"
+						},
+						"path": "chipsoftblob",
+						"enableCompression": true
+					}
 				},
 				"inputs": [
 					{
