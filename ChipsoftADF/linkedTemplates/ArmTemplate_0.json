@@ -1,0 +1,1918 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ChipsoftADF"
+		},
+		"lnkSnowflake_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'lnkSnowflake'"
+		},
+		"linkBlob_sasUri": {
+			"type": "secureString",
+			"metadata": "Secure string for 'sasUri' of 'linkBlob'"
+		},
+		"lnkSnowflake_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "GLOBALTENDER"
+		},
+		"lnkSnowflake_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "vt90872.central-india.azure.snowflakecomputing.com"
+		},
+		"US_properties_ProcessTender_parameters_Country": {
+			"type": "string",
+			"defaultValue": "US"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/linkBlob')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"sasUri": "[parameters('linkBlob_sasUri')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/lnkSnowflake')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SnowflakeV2",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"accountIdentifier": "VT90872",
+					"user": "ABHISHEKCHIPSOFTINDIA",
+					"database": "[parameters('lnkSnowflake_properties_typeProperties_database')]",
+					"warehouse": "COMPUTE_WH",
+					"role": "ACCOUNTADMIN",
+					"host": "[parameters('lnkSnowflake_properties_typeProperties_host')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('lnkSnowflake_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/shir-nic')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Tender')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "linkBlob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"FolderName": {
+						"type": "string"
+					},
+					"FileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().FileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().FolderName",
+							"type": "Expression"
+						},
+						"container": "chipsoftblob"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/linkBlob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SF')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lnkSnowflake",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeV2Table",
+				"schema": [],
+				"typeProperties": {
+					"schema": "TENDERSTAGE",
+					"table": "TENDERS"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lnkSnowflake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "lnkSnowflake",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeV2Table",
+				"schema": [
+					{
+						"name": "_ID",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "POSTING_ID",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "DATE_C",
+						"type": "TIMESTAMP_NTZ"
+					},
+					{
+						"name": "EMAIL_ID",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "REGION",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "ADD1",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "ADD2",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "CITY",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "STATE",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "PINCODE",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "COUNTRY",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "URL",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "TEL",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "FAX",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "CONTACT_PERSON",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "MAJ_ORG",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "TENDER_NOTICE_NO",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "NOTICE_TYPE",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "GLOBAL",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "MFA",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "TENDERS_DETAILS",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "SHORT_DESC",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "EST_COST",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 2
+					},
+					{
+						"name": "CURRENCY",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "DOC_LAST",
+						"type": "TIMESTAMP_NTZ"
+					},
+					{
+						"name": "FINANCIER",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "TENDER_DOC_FILE",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "tender_sector[0]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[1]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[2]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[3]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[4]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[5]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[6]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[7]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[8]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[9]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[10]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[11]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[12]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[13]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[14]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[15]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[16]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[17]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[18]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[19]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[20]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "tender_sector[21]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "CORREGENDUM_DETAILS",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "PROJECT_NAME",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "cpv[0]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[1]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[2]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[3]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[4]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[5]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[6]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[7]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[8]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[9]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[10]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[11]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[12]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[13]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[14]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[15]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[16]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[17]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[18]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[19]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[20]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[21]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[22]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[23]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[24]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[25]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[26]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[27]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[28]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[29]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[30]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[31]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[32]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[33]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[34]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[35]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[36]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[37]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[38]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[39]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[40]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[41]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[42]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[43]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[44]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[45]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[46]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[47]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[48]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[49]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[50]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[51]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[52]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[53]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[54]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "cpv[55]",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "AUTHORIZE",
+						"type": "BOOLEAN"
+					},
+					{
+						"name": "COVID",
+						"type": "BOOLEAN"
+					},
+					{
+						"name": "POL_REGION",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "INSERTEDON",
+						"type": "TIMESTAMP_NTZ"
+					},
+					{
+						"name": "EXPIREAT",
+						"type": "TIMESTAMP_NTZ"
+					},
+					{
+						"name": "CRUNCHED_SHORT_DESC",
+						"type": "VARCHAR"
+					}
+				],
+				"typeProperties": {
+					"schema": "TENDERSTAGE",
+					"table": "TENDERS"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/lnkSnowflake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_blob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "linkBlob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"fname": {
+						"type": "string"
+					},
+					"folder": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().fname",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"container": "chipsoftblob"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "_id",
+						"type": "String"
+					},
+					{
+						"name": "posting_id",
+						"type": "String"
+					},
+					{
+						"name": "date_c",
+						"type": "String"
+					},
+					{
+						"name": "email_id",
+						"type": "String"
+					},
+					{
+						"name": "region",
+						"type": "String"
+					},
+					{
+						"name": "add1",
+						"type": "String"
+					},
+					{
+						"name": "add2",
+						"type": "String"
+					},
+					{
+						"name": "city",
+						"type": "String"
+					},
+					{
+						"name": "state",
+						"type": "String"
+					},
+					{
+						"name": "pincode",
+						"type": "String"
+					},
+					{
+						"name": "country",
+						"type": "String"
+					},
+					{
+						"name": "url",
+						"type": "String"
+					},
+					{
+						"name": "tel",
+						"type": "String"
+					},
+					{
+						"name": "fax",
+						"type": "String"
+					},
+					{
+						"name": "contact_person",
+						"type": "String"
+					},
+					{
+						"name": "maj_org",
+						"type": "String"
+					},
+					{
+						"name": "tender_notice_no",
+						"type": "String"
+					},
+					{
+						"name": "notice_type",
+						"type": "String"
+					},
+					{
+						"name": "global",
+						"type": "String"
+					},
+					{
+						"name": "mfa",
+						"type": "String"
+					},
+					{
+						"name": "tenders_details",
+						"type": "String"
+					},
+					{
+						"name": "short_desc",
+						"type": "String"
+					},
+					{
+						"name": "currency",
+						"type": "String"
+					},
+					{
+						"name": "est_cost",
+						"type": "String"
+					},
+					{
+						"name": "doc_last",
+						"type": "String"
+					},
+					{
+						"name": "financier",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[0]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[1]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[2]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[3]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[4]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[5]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[6]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[7]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[8]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[9]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[10]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[11]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[12]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[13]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[14]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[15]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[16]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[17]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[18]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[19]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[20]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[21]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[22]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[23]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[24]",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector[25]",
+						"type": "String"
+					},
+					{
+						"name": "corregendum_details",
+						"type": "String"
+					},
+					{
+						"name": "cpv[0]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[1]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[2]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[3]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[4]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[5]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[6]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[7]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[8]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[9]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[10]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[11]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[12]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[13]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[14]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[15]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[16]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[17]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[18]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[19]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[20]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[21]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[22]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[23]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[24]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[25]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[26]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[27]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[28]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[29]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[30]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[31]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[32]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[33]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[34]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[35]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[36]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[37]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[38]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[39]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[40]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[41]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[42]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[43]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[44]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[45]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[46]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[47]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[48]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[49]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[50]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[51]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[52]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[53]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[54]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[55]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[56]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[57]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[58]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[59]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[60]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[61]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[62]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[63]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[64]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[65]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[66]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[67]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[68]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[69]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[70]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[71]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[72]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[73]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[74]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[75]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[76]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[77]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[78]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[79]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[80]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[81]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[82]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[83]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[84]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[85]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[86]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[87]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[88]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[89]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[90]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[91]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[92]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[93]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[94]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[95]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[96]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[97]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[98]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[99]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[100]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[101]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[102]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[103]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[104]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[105]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[106]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[107]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[108]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[109]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[110]",
+						"type": "String"
+					},
+					{
+						"name": "cpv[111]",
+						"type": "String"
+					},
+					{
+						"name": "authorize",
+						"type": "String"
+					},
+					{
+						"name": "project_name",
+						"type": "String"
+					},
+					{
+						"name": "covid",
+						"type": "String"
+					},
+					{
+						"name": "pol_region",
+						"type": "String"
+					},
+					{
+						"name": "ExpireAt",
+						"type": "String"
+					},
+					{
+						"name": "tender_doc_file",
+						"type": "String"
+					},
+					{
+						"name": "InsertedOn",
+						"type": "String"
+					},
+					{
+						"name": "tender_sector",
+						"type": "String"
+					},
+					{
+						"name": "cpv",
+						"type": "String"
+					},
+					{
+						"name": "related_documents",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/linkBlob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ProcessTender')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Tender Data",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Set File Name",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SnowflakeV2Sink",
+								"importSettings": {
+									"type": "SnowflakeImportCopyCommand"
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkBlob",
+									"type": "LinkedServiceReference"
+								},
+								"path": "chipsoftblob",
+								"enableCompression": true
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_Tender",
+								"type": "DatasetReference",
+								"parameters": {
+									"FolderName": {
+										"value": "@concat(pipeline().parameters.Country,'/inbox')",
+										"type": "Expression"
+									},
+									"FileName": {
+										"value": "@variables('FileName')",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SF",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Set Current Date",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "CurrentDate",
+							"value": {
+								"value": "@formatDateTime(utcNow(),'MMddyyyy')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set File Name",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Current Date",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "FileName",
+							"value": {
+								"value": "@concat(variables('CurrentDate'),'.csv') ",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"Country": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"CurrentDate": {
+						"type": "String"
+					},
+					"FileName": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Tender')]",
+				"[concat(variables('factoryId'), '/datasets/SF')]",
+				"[concat(variables('factoryId'), '/linkedServices/linkBlob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/copy file')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "copy csv file",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_blob",
+								"type": "DatasetReference",
+								"parameters": {
+									"fname": "employees.csv",
+									"folder": "china/inbox"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_blob",
+								"type": "DatasetReference",
+								"parameters": {
+									"fname": "employees.csv",
+									"folder": "china/archive"
+								}
+							}
+						]
+					},
+					{
+						"name": "Delete file",
+						"type": "Delete",
+						"dependsOn": [
+							{
+								"activity": "copy csv file",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "ds_blob",
+								"type": "DatasetReference",
+								"parameters": {
+									"fname": "employees.csv",
+									"folder": "china/inbox"
+								}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_blob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sample_file_load')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy CSV to SnowFlake",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SnowflakeV2Sink",
+								"importSettings": {
+									"type": "SnowflakeImportCopyCommand"
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkBlob",
+									"type": "LinkedServiceReference"
+								},
+								"path": "chipsoftblob",
+								"enableCompression": true
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_blob",
+								"type": "DatasetReference",
+								"parameters": {
+									"fname": {
+										"value": "@pipeline().parameters.filename",
+										"type": "Expression"
+									},
+									"folder": "'dddd'"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SnowflakeTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"filename": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"varfname": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_blob')]",
+				"[concat(variables('factoryId'), '/datasets/SnowflakeTable1')]",
+				"[concat(variables('factoryId'), '/linkedServices/linkBlob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/US')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "ProcessTender",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"Country": "[parameters('US_properties_ProcessTender_parameters_Country')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2024-11-21T21:23:00",
+						"timeZone": "India Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								3
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/ProcessTender')]"
+			]
+		}
+	]
+}
