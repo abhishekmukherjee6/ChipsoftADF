@@ -18,8 +18,12 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().FileName",
+					"type": "Expression"
+				},
 				"folderPath": {
-					"value": "@dataset().ds_Country",
+					"value": "@dataset().FolderName",
 					"type": "Expression"
 				},
 				"container": "chipsoftblob"
