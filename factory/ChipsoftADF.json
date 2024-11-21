@@ -1,0 +1,9 @@
+{
+	"name": "ChipsoftADF",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "46fa5cbd-51bd-44fe-94bf-7200a824ff0c",
+		"tenantId": "56a4745f-2b72-436f-bf37-e8b6e7096d26"
+	}
+}
