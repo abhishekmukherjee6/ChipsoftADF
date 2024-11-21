@@ -1,0 +1,6 @@
+{
+	"name": "shir-nic",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
