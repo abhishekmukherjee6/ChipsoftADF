@@ -8,6 +8,9 @@
 		"parameters": {
 			"ds_Country": {
 				"type": "string"
+			},
+			"ds_Date": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
