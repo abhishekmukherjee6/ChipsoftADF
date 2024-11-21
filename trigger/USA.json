@@ -1,5 +1,5 @@
 {
-	"name": "US",
+	"name": "USA",
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
@@ -10,7 +10,7 @@
 					"type": "PipelineReference"
 				},
 				"parameters": {
-					"Country": "US"
+					"Country": "USA"
 				}
 			}
 		],
@@ -23,7 +23,7 @@
 				"timeZone": "India Standard Time",
 				"schedule": {
 					"minutes": [
-						15
+						30
 					],
 					"hours": [
 						3
