@@ -1,0 +1,724 @@
+{
+	"name": "ds_blob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkBlob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Tenders1Nov2024To15Nov2024.csv",
+				"container": "chipsoftblob"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "_id",
+				"type": "String"
+			},
+			{
+				"name": "posting_id",
+				"type": "String"
+			},
+			{
+				"name": "date_c",
+				"type": "String"
+			},
+			{
+				"name": "email_id",
+				"type": "String"
+			},
+			{
+				"name": "region",
+				"type": "String"
+			},
+			{
+				"name": "add1",
+				"type": "String"
+			},
+			{
+				"name": "add2",
+				"type": "String"
+			},
+			{
+				"name": "city",
+				"type": "String"
+			},
+			{
+				"name": "state",
+				"type": "String"
+			},
+			{
+				"name": "pincode",
+				"type": "String"
+			},
+			{
+				"name": "country",
+				"type": "String"
+			},
+			{
+				"name": "url",
+				"type": "String"
+			},
+			{
+				"name": "tel",
+				"type": "String"
+			},
+			{
+				"name": "fax",
+				"type": "String"
+			},
+			{
+				"name": "contact_person",
+				"type": "String"
+			},
+			{
+				"name": "maj_org",
+				"type": "String"
+			},
+			{
+				"name": "tender_notice_no",
+				"type": "String"
+			},
+			{
+				"name": "notice_type",
+				"type": "String"
+			},
+			{
+				"name": "global",
+				"type": "String"
+			},
+			{
+				"name": "mfa",
+				"type": "String"
+			},
+			{
+				"name": "tenders_details",
+				"type": "String"
+			},
+			{
+				"name": "short_desc",
+				"type": "String"
+			},
+			{
+				"name": "currency",
+				"type": "String"
+			},
+			{
+				"name": "est_cost",
+				"type": "String"
+			},
+			{
+				"name": "doc_last",
+				"type": "String"
+			},
+			{
+				"name": "financier",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[0]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[1]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[2]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[3]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[4]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[5]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[6]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[7]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[8]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[9]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[10]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[11]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[12]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[13]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[14]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[15]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[16]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[17]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[18]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[19]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[20]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[21]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[22]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[23]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[24]",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector[25]",
+				"type": "String"
+			},
+			{
+				"name": "corregendum_details",
+				"type": "String"
+			},
+			{
+				"name": "cpv[0]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[1]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[2]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[3]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[4]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[5]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[6]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[7]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[8]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[9]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[10]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[11]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[12]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[13]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[14]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[15]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[16]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[17]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[18]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[19]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[20]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[21]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[22]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[23]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[24]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[25]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[26]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[27]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[28]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[29]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[30]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[31]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[32]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[33]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[34]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[35]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[36]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[37]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[38]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[39]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[40]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[41]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[42]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[43]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[44]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[45]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[46]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[47]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[48]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[49]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[50]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[51]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[52]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[53]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[54]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[55]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[56]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[57]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[58]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[59]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[60]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[61]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[62]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[63]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[64]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[65]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[66]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[67]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[68]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[69]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[70]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[71]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[72]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[73]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[74]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[75]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[76]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[77]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[78]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[79]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[80]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[81]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[82]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[83]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[84]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[85]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[86]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[87]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[88]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[89]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[90]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[91]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[92]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[93]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[94]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[95]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[96]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[97]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[98]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[99]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[100]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[101]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[102]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[103]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[104]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[105]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[106]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[107]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[108]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[109]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[110]",
+				"type": "String"
+			},
+			{
+				"name": "cpv[111]",
+				"type": "String"
+			},
+			{
+				"name": "authorize",
+				"type": "String"
+			},
+			{
+				"name": "project_name",
+				"type": "String"
+			},
+			{
+				"name": "covid",
+				"type": "String"
+			},
+			{
+				"name": "pol_region",
+				"type": "String"
+			},
+			{
+				"name": "ExpireAt",
+				"type": "String"
+			},
+			{
+				"name": "tender_doc_file",
+				"type": "String"
+			},
+			{
+				"name": "InsertedOn",
+				"type": "String"
+			},
+			{
+				"name": "tender_sector",
+				"type": "String"
+			},
+			{
+				"name": "cpv",
+				"type": "String"
+			},
+			{
+				"name": "related_documents",
+				"type": "String"
+			}
+		]
+	}
+}
