@@ -5,8 +5,6 @@
 			{
 				"name": "Copy Tender Data",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Set File Name",
@@ -35,6 +33,12 @@
 							"type": "DelimitedTextReadSettings"
 						}
 					},
+					"sink": {
+						"type": "SnowflakeV2Sink",
+						"importSettings": {
+							"type": "SnowflakeImportCopyCommand"
+						}
+					},
 					"enableStaging": false
 				},
 				"inputs": [
@@ -43,7 +47,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FolderName": {
-								"value": "@pipeline().parameters.Country",
+								"value": "@concat(pipeline().parameters.Country,'/inbox')",
 								"type": "Expression"
 							},
 							"FileName": {
@@ -51,6 +55,12 @@
 								"type": "Expression"
 							}
 						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SnowflakeTable1",
+						"type": "DatasetReference"
 					}
 				]
 			},
