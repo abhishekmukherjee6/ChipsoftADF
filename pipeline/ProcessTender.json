@@ -75,7 +75,14 @@
 			{
 				"name": "Set Current Date",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureOutput": false,
 					"secureInput": false
@@ -112,6 +119,20 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "xxx",
+					"value": "sdsd"
+				}
 			}
 		],
 		"parameters": {
@@ -124,6 +145,9 @@
 				"type": "String"
 			},
 			"FileName": {
+				"type": "String"
+			},
+			"xxx": {
 				"type": "String"
 			}
 		},
